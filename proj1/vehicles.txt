@@ -1,0 +1,24 @@
+2003,Mazda,Protege 5,Hatchback
+2015,Honda,Pilot Touring,Sport Utility Vehicle
+2021,Honda,Civic,Sedan
+2021,Toyota,Corolla LE,Compact Car
+2021,Honda,Accord,Mid-size Car
+2016,Toyota,PriusXW50,Compact Car
+2000,Toyota,PriusXW10,Subcompact Car
+2011,Mazda,Tribute,Compact sport utility vehicle
+2018,Ford,Focus,Compact car
+2019,Chevrolet,Volt,Compact car
+2019,Chevrolet,Cruze,Compact car
+2014,Chevrolet,Silverado 1500,Pickup truck
+2017,Chevrolet,Silverado 1500,Pickup truck
+2018,Chevrolet,Colorado,Pickup truck
+2020,Chevrolet,Colorado,Pickup truck
+2020,Volkswagen,Tiguan,Compact sport utility vehicle
+2017,Volkswagen,Touareg,Sport Utility Vehicle
+2021,Ford,Explorer,Sport utility vehicle
+2020,Toyota,RAV4,Compact sport utility vehicle
+2020,Toyota,Highlander,Sport utility vehicle
+2021,Toyota,Land Cruiser,Sport utility vehicle
+2018,Chevrolet,Equinox,Sport Utility Vehicle
+2018,BMW,X2 sDrive28i,Compact sport utility vehicle
+2014,BMW,X6 M,Mid-size Sport Utility Vehicle
