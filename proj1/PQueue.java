@@ -56,8 +56,7 @@ public class PQueue<E extends Comparable<E>> implements PQueueAPI<E>
     */
    public PQueue()
    {
-     // ????
-     tree = new ArrayList<Compararable>();
+     this.tree = new ArrayList<E>();
    }
    
    /**
@@ -65,7 +64,8 @@ public class PQueue<E extends Comparable<E>> implements PQueueAPI<E>
     */
    public PQueue(PQueue pQ)
    {
-      //implement this method	   
+     this.cmp = pQ.cmp;
+     this.tree = pQ.tree;
    }
    
    /**
@@ -74,30 +74,33 @@ public class PQueue<E extends Comparable<E>> implements PQueueAPI<E>
     */
    public PQueue(Comparator<? super E> fn)
    {
-      //implement this method
+     this();
+     this.cmp = fn;
    }
 
    public boolean isEmpty()
    {
-      //implement this method
-      return true;
+     return (this.size() == 0) ? true: false;
    }
 
    public void add(E obj)
    {
-      //implement this method
+     try {
+       this.tree.add(obj);
+       heapifyUp(this.size()-1);
+     } catch (Error error) {
+       System.out.println(error);
+     }
    }
 
    public E remove() throws PQueueException
    {
-      //implement this method
-	  return null;
+     return this.tree.removeFirst();
    }
  
    public E peek() throws PQueueException
    {
-      //implement this method
-	  return null;
+     return this.tree.get(0);
    }
 
    public int size()
@@ -112,7 +115,9 @@ public class PQueue<E extends Comparable<E>> implements PQueueAPI<E>
     */
    private void swap(int place, int parent)
    {
-      //implement this method
+     var tmp = this.tree.get(place);
+     this.tree.set(place, this.tree.get(parent));
+     this.tree.set(parent, tmp);
    }
 
     /**
@@ -122,7 +127,13 @@ public class PQueue<E extends Comparable<E>> implements PQueueAPI<E>
      */
     private void heapifyUp(int index)
     {
-        //implement this method
+      int parent = 2*(index+1);
+      while (index > 0 && cmp.compare(this.tree.get(index), this.tree.get(parent)) >= 1) 
+      {
+        this.swap(index, parent);
+        index = parent;
+        parent = 2*(index+1);
+      }
     }
     
     /**
@@ -132,6 +143,8 @@ public class PQueue<E extends Comparable<E>> implements PQueueAPI<E>
      */   
     public void heapifyDown(int index)
     {
-        //implement this method
+      int size = this.size();
+      int parent = index;
+      int child = 2*(parent+1);
     }
 }

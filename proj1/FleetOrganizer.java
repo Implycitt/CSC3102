@@ -41,7 +41,7 @@ import java.util.Scanner;
 public class FleetOrganizer 
 {
     /**
-     * @param args[0] <data-file?
+     * @param args[0] <data-file>
      * @param args[1] <order-key>
      */
     public static void main(String[] args) throws IOException, PQueueException
@@ -58,7 +58,50 @@ public class FleetOrganizer
         usage += "-1 -> -year-make-model-type\n";
         usage += "-2 -> -make-model-type-year\n";
         
-        //complete implementation of this function    
+        int[] validKeys = {-2, -1, 0, 1, 2};
+        FileReader reader;  
+        boolean valid = false;
+        int iterator;
+        String line= "";
+        PQueue lines = new PQueue();
+        int orderKey;
 
+        if (args.length == 0 || args.length == 1)
+        {
+          System.out.println(usage);
+          return;
+        }
+
+        try
+        {
+          reader = new FileReader(args[0]);
+          orderKey = Integer.parseInt(args[1]);
+          for (int key: validKeys)
+          {
+            if (key == orderKey) valid = true;
+          }
+        } catch (Exception e) {
+          System.out.println(e);
+          System.out.println(usage);
+          return;
+        }
+
+        if (!valid) 
+        {
+          System.out.println(usage);
+          return;
+        }
+         
+        while ((iterator = reader.read()) != -1) 
+        {
+          line += (char) iterator;
+          if ((char) iterator == '\n') 
+          {
+            System.out.println(line);
+            lines.add(line);
+            line = "";
+          }
+        }
+        
     }    
 }
