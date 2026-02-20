@@ -59,12 +59,10 @@ public class FleetOrganizer
         usage += "-2 -> -make-model-type-year\n";
         
         int[] validKeys = {-2, -1, 0, 1, 2};
-        FileReader reader;  
+        String[] sorts = {"-make-model-type-year", "-year-make-model-type", "-type+year-make-model", "+year+make+model+type", "+make+model+type+year"};
         boolean valid = false;
-        int iterator;
-        String line= "";
-        PQueue lines = new PQueue();
         int orderKey;
+        Comparator<Car> cmp = null;
 
         if (args.length == 0 || args.length == 1)
         {
@@ -74,7 +72,6 @@ public class FleetOrganizer
 
         try
         {
-          reader = new FileReader(args[0]);
           orderKey = Integer.parseInt(args[1]);
           for (int key: validKeys)
           {
@@ -92,16 +89,103 @@ public class FleetOrganizer
           return;
         }
          
-        while ((iterator = reader.read()) != -1) 
-        {
-          line += (char) iterator;
-          if ((char) iterator == '\n') 
-          {
-            System.out.println(line);
-            lines.add(line);
-            line = "";
+        switch (orderKey) {
+            case 2:
+                cmp = new Comparator<Car>() {
+                    public int compare(Car a, Car b) {
+                        int r = a.getMake().compareTo(b.getMake());
+                        if (r != 0) return r;
+                        r = a.getModel().compareTo(b.getModel());
+                        if (r != 0) return r;
+                        r = a.getType().compareTo(b.getType());
+                        if (r != 0) return r;
+                        return a.getYear() - b.getYear();
+                    }
+                };
+                break;
+            case 1:
+                cmp = new Comparator<Car>() {
+                    public int compare(Car a, Car b) {
+                        int r = a.getYear() - b.getYear();
+                        if (r != 0) return r;
+                        r = a.getMake().compareTo(b.getMake());
+                        if (r != 0) return r;
+                        r = a.getModel().compareTo(b.getModel());
+                        if (r != 0) return r;
+                        return a.getType().compareTo(b.getType());
+                    }
+                };
+                break;
+            case 0:
+                cmp = new Comparator<Car>() {
+                    public int compare(Car a, Car b) {
+                        int r = b.getType().compareTo(a.getType());
+                        if (r != 0) return r;
+                        r = a.getYear() - b.getYear();
+                        if (r != 0) return r;
+                        r = b.getMake().compareTo(a.getMake());
+                        if (r != 0) return r;
+                        return b.getModel().compareTo(a.getModel());
+                    }
+                };
+                break;
+            case -1:
+                cmp = new Comparator<Car>() {
+                    public int compare(Car a, Car b) {
+                        int r = b.getYear() - a.getYear();
+                        if (r != 0) return r;
+                        r = b.getMake().compareTo(a.getMake());
+                        if (r != 0) return r;
+                        r = b.getModel().compareTo(a.getModel());
+                        if (r != 0) return r;
+                        return b.getType().compareTo(a.getType());
+                    }
+                };
+            case -2:
+                cmp = new Comparator<Car>() {
+                    public int compare(Car a, Car b) {
+                        int r = b.getMake().compareTo(a.getMake());
+                        if (r != 0) return r;
+                        r = b.getModel().compareTo(a.getModel());
+                        if (r != 0) return r;
+                        r = b.getType().compareTo(a.getType());
+                        if (r != 0) return r;
+                        return b.getYear() - a.getYear();
+                    }
+                };
+                break;
           }
+
+        PQueue<Car> cars = new PQueue<Car>(cmp);
+
+        try {
+            Scanner fileScan = new Scanner(new FileReader(args[0]));
+            while (fileScan.hasNextLine()) {
+                String line = fileScan.nextLine();
+                String[] parts = line.split(",");
+                if (parts.length == 4) {
+                    try {
+                        int year = Integer.parseInt(parts[0].trim());
+                        String make = parts[1].trim().toUpperCase();
+                        String model = parts[2].trim().toUpperCase();
+                        String type = parts[3].trim().toUpperCase();
+
+                        cars.add(new Car(year, make, model, type));
+                    } catch (NumberFormatException e){}
+                }
+            }
+            fileScan.close();
+        } catch (IOException e) {
+            System.out.println(usage);
+            return;
         }
-        
+
+        System.out.println(String.format("Fleet: %s", sorts[orderKey+2]));
+        while (!cars.isEmpty())
+        {
+          System.out.println(cars.remove());
+        }
+
+
     }    
 }
