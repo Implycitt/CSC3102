@@ -57,6 +57,7 @@ public class PQueue<E extends Comparable<E>> implements PQueueAPI<E>
    public PQueue()
    {
      this.tree = new ArrayList<E>();
+     this.cmp = (x, y) -> x.compareTo(y);
    }
    
    /**
@@ -95,7 +96,9 @@ public class PQueue<E extends Comparable<E>> implements PQueueAPI<E>
 
    public E remove() throws PQueueException
    {
-     return this.tree.removeFirst();
+     var ret = this.tree.removeFirst();
+     heapifyDown(0);
+     return ret;
    }
  
    public E peek() throws PQueueException
@@ -127,12 +130,12 @@ public class PQueue<E extends Comparable<E>> implements PQueueAPI<E>
      */
     private void heapifyUp(int index)
     {
-      int parent = 2*(index+1);
-      while (index > 0 && cmp.compare(this.tree.get(index), this.tree.get(parent)) >= 1) 
+      int parent = (index-1)/2;
+      while (index > 0 && cmp.compare(tree.get(index), tree.get(parent)) > 0) 
       {
-        this.swap(index, parent);
+        swap(index, parent);
         index = parent;
-        parent = 2*(index+1);
+        parent = (index-1)/2;
       }
     }
     
@@ -146,5 +149,16 @@ public class PQueue<E extends Comparable<E>> implements PQueueAPI<E>
       int size = this.size();
       int parent = index;
       int child = 2*(parent+1);
+      while (child > size-1) 
+      {
+        int smallerChild = (this.cmp.compare(this.tree.get(child), this.tree.get(child+1)) >= 1) ? child+1 : child;
+        if (this.cmp.compare(this.tree.get(parent), this.tree.get(smallerChild)) > 0)
+        {
+          this.swap(parent, smallerChild);
+        } else {
+          break;
+        }
+        index = smallerChild;
+      }
     }
 }
