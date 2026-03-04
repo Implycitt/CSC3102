@@ -5,10 +5,10 @@ import java.util.Scanner;
 
 /**
  * A testbed for an augmented implementation of an AVL tree
- * @author William Duncan, YOUR NAME
+ * @author William Duncan, Quentin Bordelon
  * @see AVLTreeAPI, AVLTreeException
  * <pre>
- * Date: 99-99-9999
+ * Date: 05/03/2026
  * CSC 3102 Programming Project # 2
  * Instructor: Dr. Duncan 
  * </pre>
@@ -31,7 +31,53 @@ public class Dendrologist
             System.out.println(usage);
             throw new IllegalArgumentException("There should be 2 command line arguments.");
         }
-        //complete the implementation of this method
- 
+
+        AVLTree<String> Tree = new AVLTree<String>();
+        String orderCode = args[0];
+        String commandFile = args[1];
+        String arg;
+        Comparator<Node> cmp;
+
+        try {
+          Scanner fileScan = new Scanner(new FileReader(commandFile));
+          while (fileScan.hasNextLine()) {
+            String line = fileScan.nextLine();
+            String[] parts = line.split(" ");
+            String command = parts[0];
+
+            if (parts.length == 2) {
+              arg = parts[1];
+            }
+
+            switch (orderCode) {
+                case "-0":
+                    cmp = new Comparator<Node>() {
+                        public int compare(Node a, Node b) {
+                          return a.data.compareTo(b.data);
+                        }
+                    };
+                    break;
+                case "-1":
+                    cmp = new Comparator<Node>() {
+                        public int compare(Node a, Node b) {
+                          return (a.data.compareTo(b.data)).reversed();
+                        }
+                    };
+                    break;
+            }
+
+            if (command.equals("insert")) {
+              Tree.insert(arg);
+              System.out.println("Inserted: " + arg);
+            } else if (command.equals("delete")) {
+              Tree.remove(arg);
+              System.out.println("Deleted: " + arg);
+            } else if (command.equals("traverse")) {
+              Tree.traverse(cmp);
+            }
+          }
+        } catch (Exception e) {
+          System.out.println(usage);
+        }
     }   
 }

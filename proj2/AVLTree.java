@@ -665,8 +665,9 @@ public class AVLTree<E extends Comparable<E>> implements AVLTreeAPI<E>
      */
     private int height(Node node)
     {
-        //implement this method
-        return 0;
+        if (node.right == null && node.left == null) return 0;
+
+        return Math.max(height(node.right), height(node.left));
     }
    
    /**
@@ -677,8 +678,14 @@ public class AVLTree<E extends Comparable<E>> implements AVLTreeAPI<E>
     */
    private boolean isFull(Node node)
    {
-       //implement this method
-       return false;
+        // base case
+        if (node.right == null && node.left == null) return true;
+
+        // checks the children
+        if (isFull(node.right) && isFull(node.left)) return true;
+
+        // no condition met => *buzzer sound*
+        return false;
    }   
    
     /**
