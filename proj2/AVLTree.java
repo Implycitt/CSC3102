@@ -7,7 +7,7 @@ import java.util.function.Function;
 /**
  * Models an AVL tree.
  * @param <E> data type of elements of the tree
- * @author William Duncan, YOUR NAME
+ * @author William Duncan, Quentin Bordelon
  * @see AVLTreeAPI, AVLTreeException
  * <pre>
  * Date: 99-99-9999

@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 /**
  * A testbed for an augmented implementation of an AVL tree
- * @author William Duncan, YOUR NAME
+ * @author William Duncan, Quentin Bordelon
  * @see AVLTreeAPI, AVLTreeException
  * <pre>
  * Date: 99-99-9999
