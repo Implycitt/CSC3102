@@ -10,7 +10,7 @@ import java.util.function.Function;
  * @author William Duncan, Quentin Bordelon
  * @see AVLTreeAPI, AVLTreeException
  * <pre>
- * Date: 99-99-9999
+ * Date: 05-03-2026
  * CSC 3102 Programming Project # 2
  * Instructor: Dr. Duncan 
  *
@@ -209,7 +209,23 @@ public class AVLTree<E extends Comparable<E>> implements AVLTreeAPI<E>
    @Override
    public void levelOrder(Function func)
    {
-       //implement this method    
+      if (root == null) return;
+
+      Queue<Node> queue = new LinkedList<>();
+      queue.add(root);
+
+      while (!queue.isEmpty()) {
+          Node current = queue.poll();
+
+          func.apply(current.data);
+
+          if (current.left != null) {
+              queue.add(current.left);
+          }
+          if (current.right != null) {
+              queue.add(current.right);
+          }
+      }
    }
       
    @Override
@@ -221,16 +237,14 @@ public class AVLTree<E extends Comparable<E>> implements AVLTreeAPI<E>
    @Override
    public int diameter()
    {
-       //implement this method
-       return 0;
+     if (root == null) return 0;
+     return height(root.left) + height(root.right) + 2;
    }
    
    @Override
    public boolean isFull()
    {
-       //implement this method
-       return false;
-
+      return isFull(root);
    }   
    
    @Override
@@ -665,8 +679,9 @@ public class AVLTree<E extends Comparable<E>> implements AVLTreeAPI<E>
      */
     private int height(Node node)
     {
-        //implement this method
-        return 0;
+        if (node == null) return -1;
+
+        return 1 + Math.max(height(node.right), height(node.left));
     }
    
    /**
@@ -677,8 +692,14 @@ public class AVLTree<E extends Comparable<E>> implements AVLTreeAPI<E>
     */
    private boolean isFull(Node node)
    {
-       //implement this method
-       return false;
+        // base case
+        if (node == null) return true;
+
+        // checks the children
+        if ((node.right == null && node.left != null) || (node.right != null && node.left == null)) return false;
+
+        // no condition met => *buzzer sound*
+        return false;
    }   
    
     /**
@@ -691,10 +712,11 @@ public class AVLTree<E extends Comparable<E>> implements AVLTreeAPI<E>
      */
     private boolean isComplete(Node node, int index)
     {
-        //implement this method
-        return false;
+      if (node == null) return true;
+
+      if (index >= this.count) return false;
+
+      return isComplete(node.left, 2 * index + 1) && isComplete(node.right, 2 * index + 2);
     }    
-/* END: Augmented Private Auxiliary Methods */   
-   
 }
 
